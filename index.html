@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Room Booking</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Conference Room Booking</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="employeeName">Employee Name</label>
+                <input type="text" class="form-control" id="employeeName" name="employeeName" required>
+            </div>
+            <div class="form-group">
+                <label for="bookingDate">Booking Date</label>
+                <input type="date" class="form-control" id="bookingDate" name="bookingDate" required>
+            </div>
+            <div class="form-group">
+                <label for="startTime">Start Time</label>
+                <input type="time" class="form-control" id="startTime" name="startTime" required>
+            </div>
+            <div class="form-group">
+                <label for="endTime">End Time</label>
+                <input type="time" class="form-control" id="endTime" name="endTime" required>
+            </div>
+            <div class="form-group">
+                <label for="roomNumber">Room Number</label>
+                <select class="form-control" id="roomNumber" name="roomNumber" required>
+                    <option value="101">201</option>
+                    <option value="102">202</option>
+                    <option value="103">203</option>
+                    <option value="104">204</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="additionalNotes">Additional Notes</label>
+                <textarea class="form-control" id="additionalNotes" name="additionalNotes"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Book Room</button>
+        </form>
+
+        <div id="successMessage" class="alert alert-success mt-3" style="display:none;">
+            Booking successfully submitted!
+        </div>
+        <div id="errorMessage" class="alert alert-danger mt-3" style="display:none;">
+            An error occurred while submitting the booking.
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#bookingForm').on('submit', function(event) {
+                event.preventDefault();
+
+                var formData = {
+                    employeeName: $('#employeeName').val(),
+                    bookingDate: $('#bookingDate').val(),
+                    startTime: $('#startTime').val(),
+                    endTime: $('#endTime').val(),
+                    roomNumber: $('#roomNumber').val(),
+                    additionalNotes: $('#additionalNotes').val()
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:3000/booking', // Replace with your actual API endpoint
+                    data: JSON.stringify(formData),
+                    contentType: 'application/json',
+                    success: function() {
+                        $('#successMessage').show();
+                        $('#errorMessage').hide();
+                    },
+                    error: function() {
+                        $('#successMessage').hide();
+                        $('#errorMessage').show();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
